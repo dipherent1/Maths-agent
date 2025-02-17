@@ -47,10 +47,10 @@ API_KEY = os.getenv("API_KEY")
 agent = MathAgent(API_KEY)
 
 # Process text input
-agent.process_input("a = 2")        # {'a': 2}
-agent.process_input("b = 3")        # {'a': 2, 'b': 3}
-# Process image input (snapshot of "a + b = c")
-agent.process_input(Image.open('equation.jpg'))  # {'a': 2, 'b': 3, 'c': 5}
+# agent.process_input("a = 2")        # {'a': 2}
+# agent.process_input("b = 3")        # {'a': 2, 'b': 3}
+# # Process image input (snapshot of "a + b = c")
+# agent.process_input(Image.open('equation.jpg'))  # {'a': 2, 'b': 3, 'c': 5}
 
 while True:
     user_input = input("Enter equation or image path: ")
