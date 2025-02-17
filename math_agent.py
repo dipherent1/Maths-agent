@@ -49,8 +49,17 @@ agent = MathAgent(API_KEY)
 # Process text input
 agent.process_input("a = 2")        # {'a': 2}
 agent.process_input("b = 3")        # {'a': 2, 'b': 3}
-
 # Process image input (snapshot of "a + b = c")
 agent.process_input(Image.open('equation.jpg'))  # {'a': 2, 'b': 3, 'c': 5}
+
+while True:
+    user_input = input("Enter equation or image path: ")
+    if user_input.lower() == "exit":
+        break
+    if user_input.endswith(".jpg") or user_input.endswith(".png"):
+        agent.process_input(Image.open(user_input))
+    else:
+        agent.process_input(user_input)
+    print("Current variables:", agent.variables)
 
 print("Final variables:", agent.variables)
