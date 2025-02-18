@@ -1,96 +1,121 @@
-# Math Agent with Interactive Mode
+# Math Agent Web UI
 
-This project is a simple AI agent that utilizes Google's Gemini API to solve mathematical equations. The agent can process both text-based mathematical expressions (e.g., `a = 2`) and image inputs containing handwritten or printed equations. It maintains a dictionary of variables and evaluates expressions dynamically.
+This project is a simple AI-powered Math Agent that processes mathematical expressions from text or images using Google's Gemini API. It provides a FastAPI backend with a web UI for interactive use.
 
 ## Features
 
-- **Text Input**: Solve equations like `a = 2` or `x + y = 10`.
-- **Image Input**: Upload images of handwritten or digital equations (e.g., `equation.jpg`).
-- **Interactive Mode**: Continuously interact with the agent until you type `exit`.
-- **Variable Storage**: Stores variables in a dictionary for use in future calculations.
+- **Process Text Equations:** Input mathematical expressions in text form.
+- **Process Image Equations:** Upload images containing handwritten or digital equations.
+- **View Stored Variables:** Displays all computed variables dynamically.
+- **Simple Web Interface:** Interact using a web-based UI.
 
 ## Prerequisites
 
-1. **Python 3.8+**: Ensure Python is installed on your system.
-2. **Gemini API Key**: Obtain an API key from [Google AI Studio](https://makersuite.google.com/).
-3. **Tesseract OCR (optional)**: Install Tesseract for better image processing:
-   - **Windows**: [Tesseract Installer](https://github.com/UB-Mannheim/tesseract/wiki)
-   - **Mac**: `brew install tesseract`
-   - **Linux**: `sudo apt install tesseract-ocr`
+1. **Python 3.8+**
+2. **Google Gemini API Key** (Get from [Google AI Studio](https://makersuite.google.com/))
+3. **Required Libraries** (Installed via `pip`)
 
 ## Installation
 
-1. Clone the repository or download the `math_agent.py` file.
-2. Install the required Python libraries:
-   ```bash
+1. **Clone the Repository**
+   ```sh
+   git clone https://github.com/your-repo/math-agent.git
+   cd math-agent
+   ```
+
+2. **Create a Virtual Environment (Optional but Recommended)**
+   ```sh
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```
+
+3. **Install Dependencies**
+   ```sh
    pip install -r requirements.txt
    ```
-3. Replace `your_google_api_key` in `math_agent.py` with your actual Gemini API key.
 
-## Usage
+4. **Set Up Environment Variables**
+   - Create a `.env` file in the project root:
+     ```sh
+     GOOGLE_API_KEY=your_google_api_key_here
+     ```
+   - Or set it manually:
+     ```sh
+     export GOOGLE_API_KEY="your_google_api_key_here"  # Linux/macOS
+     set GOOGLE_API_KEY=your_google_api_key_here       # Windows CMD
+     ```
 
-### Running the Script
+## Running the Application
 
-1. Open a terminal and navigate to the project directory.
-2. Run the script:
-   ```bash
-   python math_agent.py
-   ```
-3. The interactive mode will start, allowing you to:
-   - Enter equations directly (e.g., `a = 2`).
-   - Provide the path to an image file (e.g., `equation.jpg`).
-   - Type `exit` to quit the program.
-
-### Example Interaction
-```
-Enter equation or image path: a = 2
-Current variables: {'a': 2.0}
-
-Enter equation or image path: b = 3
-Current variables: {'a': 2.0, 'b': 3.0}
-
-Enter equation or image path: equation.jpg
-Current variables: {'a': 2.0, 'b': 3.0, 'c': 5.0}
-
-Enter equation or image path: exit
+Start the FastAPI server:
+```sh
+uvicorn main:app --reload
 ```
 
-## File Structure
+Open a browser and navigate to:
+```sh
+http://127.0.0.1:8000/
+```
 
-- `math_agent.py`: Main script containing the Math Agent logic.
-- `requirements.txt`: List of dependencies.
-- `README.md`: This file.
-- `equation.jpg`: Example image file for testing (optional).
+## API Endpoints
 
-## Customization
+### `GET /`
+Returns the web UI.
 
-### Enhancing Features
+### `POST /compute`
+**Description:** Computes mathematical expressions from text.
+**Request:**
+```json
+{
+  "expression": "a = 2"
+}
+```
+**Response:**
+```json
+{
+  "status": "success",
+  "variables": {"a": 2.0}
+}
+```
 
-1. **Save/Load Variables**: Implement saving and loading of stored variables.
-2. **Improved Error Handling**: Add validation for incorrect inputs or API failures.
-3. **Advanced Math Operations**: Extend support for calculus, trigonometry, and matrix operations.
+### `POST /compute-image`
+**Description:** Computes mathematical expressions from an uploaded image.
+**Request:** Upload an image file (`.jpg`, `.png`).
+**Response:**
+```json
+{
+  "status": "success",
+  "variables": {"a": 2.0, "b": 3.0}
+}
+```
+
+### `GET /variables`
+**Description:** Returns all stored variables.
+**Response:**
+```json
+{
+  "variables": {"a": 2.0, "b": 3.0}
+}
+```
 
 ## Troubleshooting
 
-1. **API Key Issues**:
-   - Ensure the API key is valid and has the necessary permissions.
-   - Verify internet connectivity.
+1. **API Key Not Found:** Ensure the API key is correctly set in the `.env` file.
+2. **Image Not Processing:** Ensure the image is clear and in a supported format.
+3. **Server Not Running:** Verify FastAPI is installed and try restarting the server.
 
-2. **Image Processing Errors**:
-   - Check that the image file path is correct.
-   - Use high-quality images for improved OCR accuracy.
+## Future Enhancements
 
-3. **Gemini API Errors**:
-   - Review the API response for error messages.
-   - Modify input formats or prompts if needed.
+- Store and retrieve past computations.
+- Support for more complex mathematical operations.
+- Improved OCR for image-based equations.
 
 ## License
 
-This project is open-source and available under the **MIT License**.
+MIT License. Free to use and modify.
 
-## Contributing
+---
 
-Contributions are welcome! If you have suggestions or improvements, feel free to open an issue or submit a pull request.
-
-Enjoy using the Math Agent! 🚀
+### Author
+Developed by Abel 🚀
 
