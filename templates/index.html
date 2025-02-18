@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Agent</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; text-align: center; }
+        input, button { margin: 10px; padding: 10px; }
+        .container { max-width: 600px; margin: auto; }
+        #output { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h2>Math Agent</h2>
+    <div class="container">
+        <form id="mathForm">
+            <input type="text" id="expression" placeholder="Enter math expression (e.g., a=2)">
+            <button type="submit">Compute</button>
+        </form>
+        
+        <h3>Upload an Image</h3>
+        <input type="file" id="fileInput">
+        <button onclick="uploadImage()">Upload</button>
+
+        <div id="output"></div>
+
+        <h3>Stored Variables</h3>
+        <div id="variables">{{ variables }}</div>
+    </div>
+
+    <script>
+        document.getElementById("mathForm").onsubmit = async function(event) {
+            event.preventDefault();
+            const expression = document.getElementById("expression").value;
+            
+            const response = await fetch("/compute", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({ "expression": expression })
+            });
+
+            const data = await response.json();
+            document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+            updateVariables();
+        };
+
+        async function uploadImage() {
+            const fileInput = document.getElementById("fileInput");
+            const file = fileInput.files[0];
+
+            if (!file) return alert("Please select a file.");
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const response = await fetch("/compute-image", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+            document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+            updateVariables();
+        }
+
+        async function updateVariables() {
+            const response = await fetch("/variables");
+            const data = await response.json();
+            document.getElementById("variables").innerText = JSON.stringify(data.variables, null, 2);
+        }
+    </script>
+</body>
+</html>

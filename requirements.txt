@@ -1,2 +1,7 @@
+# Copy
+python-dotenv
+fastapi
+uvicorn
 google-generativeai
 pillow
+jinja2
