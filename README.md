@@ -117,5 +117,5 @@ MIT License. Free to use and modify.
 ---
 
 ### Author
-Developed by Abel 🚀
+Developed by Binyam 🚀
 
